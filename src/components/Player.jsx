@@ -52,7 +52,7 @@ export default function Player() {
       spotifyApi.getMe()
       .then(data => {
         userID = data.body.id;
-        console.log(`User ID: ${userId}`);
+        console.log(`User ID: ${userID}`);
       })
       .catch(error => {
         console.error('Error retrieving user information:', error);
@@ -76,6 +76,19 @@ export default function Player() {
     setInputValue(event.target.value);
   };
 
+
+  const addTrackToPlaylist = (playlistId, trackUri) => {
+    spotifyApi.addTracksToPlaylist(playlistId, [trackUri])
+      .then(() => {
+        console.log('Track added to playlist successfully.');
+        // 执行任何其他逻辑
+      })
+      .catch((error) => {
+        console.error('Failed to add track to playlist:', error);
+        // 处理错误
+      });
+  };
+
   const handleSubmit = () => {
     // 处理提交事件
     setInputValue("");
@@ -89,12 +102,15 @@ export default function Player() {
     .then(data => {
       const playlistId = data.body.id;
       console.log(data);
-      console.log(`New playlist ID: ${playlistId}`);
+      console.log(`New playlist ID: ${playlistId}, track URI: ${songInfo.uri}`);
       setPlaylistCreated(true);
+      addTrackToPlaylist(playlistId, songInfo.uri );
     })
     .catch(error => {
       console.error('Error creating playlist:', error);
     });
+
+    // window.location.reload();
   };
 
   const handleCancel = () => {
