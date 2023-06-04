@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios';
 import useSpotify from '../hooks/useSpotify'
 import { useSession } from 'next-auth/react';
 import { useRecoilState } from 'recoil';
@@ -6,7 +7,7 @@ import { currentTrackIdState } from '../atoms/songAtom';
 import { isPlayingState } from '../atoms/songAtom';
 import { useState, useEffect } from 'react';
 import useSongInfo from '../hooks/useSongInfo';
-import { SwitchHorizontalIcon } from '@heroicons/react/outline';
+import { TrashIcon } from '@heroicons/react/outline';
 import {
   FastForwardIcon,
   PauseIcon,
@@ -19,6 +20,7 @@ import { HeartIcon } from "@heroicons/react/outline";
 
 
 
+
 export default function Player() {
   const spotifyApi = useSpotify();
   const { data: session, status} = useSession();
@@ -28,6 +30,7 @@ export default function Player() {
   const songInfo = useSongInfo();
   const [showModal, setShowModal] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [playlistCreated, setPlaylistCreated] = useState(false);
   const fetchCurrentSong = () => {
     if (!songInfo) {
       spotifyApi.getMyCurrentPlayingTrack().then((data) => {
@@ -39,11 +42,21 @@ export default function Player() {
       });
     }
   }
+  let userID;
   
   useEffect(() => {
     if (spotifyApi.getAccessToken() && !currentTrackId) {
       fetchCurrentSong();
       setVolume(50);
+      // 获取用户信息
+      spotifyApi.getMe()
+      .then(data => {
+        userID = data.body.id;
+        console.log(`User ID: ${userId}`);
+      })
+      .catch(error => {
+        console.error('Error retrieving user information:', error);
+      });
     }
   }, [currentTrackIdState, spotifyApi, session]);
 
@@ -67,6 +80,21 @@ export default function Player() {
     // 处理提交事件
     setInputValue("");
     setShowModal(false);
+    console.log(`Creating playlist with name ${ inputValue}...`);
+    spotifyApi.createPlaylist(userID, {
+      "name": inputValue,
+      "description": "New playlist description",
+      "public": false
+  })
+    .then(data => {
+      const playlistId = data.body.id;
+      console.log(data);
+      console.log(`New playlist ID: ${playlistId}`);
+      setPlaylistCreated(true);
+    })
+    .catch(error => {
+      console.error('Error creating playlist:', error);
+    });
   };
 
   const handleCancel = () => {
@@ -86,7 +114,7 @@ export default function Player() {
         </div>
       </div>
       <div className='flex items-center justify-evenly'>
-        <SwitchHorizontalIcon className='button'/>
+        <TrashIcon className='button'/>
         <RewindIcon className='button'/>
         {isPlaying ? (
             <PauseIcon onClick={handlePlayPause} className='button w-10 h-10' />) 
@@ -105,17 +133,13 @@ export default function Player() {
           <div className="absolute top-0 left-0 w-full h-full bg-gray-900 opacity-50" />
 
           <div className="bg-white rounded-lg shadow-lg z-10">
-            <div className="px-4 py-3 border-b border-gray-200">
-              <h2 className="text-lg font-medium text-gray-900">Modal Title</h2>
-            </div>
-
             <div className="p-4">
               <div className="mb-4">
                 <label
                   htmlFor="input"
                   className="block text-gray-700 font-bold mb-2"
                 >
-                  Input Label
+                  Input new tag:
                 </label>
                 <input
                   id="input"

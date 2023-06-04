@@ -39,10 +39,3 @@ export async function getSeverSideProps(context) {
   }
 }
 
-
-// export async function getStaticProps() {
-//   const res = await fetch("")
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   }
-// }

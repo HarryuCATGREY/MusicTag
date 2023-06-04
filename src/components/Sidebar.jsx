@@ -30,7 +30,7 @@ function Sidebar() {
         <button className="flex items-center sapce-x-2 hover:text-white">
         </button>
         <button className="flex items-center sapce-x-2 hover:text-white">
-          <HomeIcon className="h-5 w-5"/>
+          <HomeIcon className="h-5 w-5" onClick={() => setPlaylistId(playlist.id)}/>
           <p>Home</p>
         </button>
         <button className="flex items-center sapce-x-2 hover:text-white">

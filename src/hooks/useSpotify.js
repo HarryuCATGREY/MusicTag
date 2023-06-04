@@ -21,13 +21,6 @@ function useSpotify() {
     }
   }, [session]) 
 
-  // useEffect(() => {
-  //   if (spotifyApi.getAccessToken()) {
-  //     spotifyApi.getUserPlaylists().then((data) => {
-  //       setPlayLists(data.body.items);
-  //     });
-  //   }
-  // }, []);
   return spotifyApi;
 }
 export default useSpotify
