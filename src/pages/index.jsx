@@ -12,7 +12,11 @@ import Player from "../components/Player.jsx"
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleMenuClick = (item) => {
+    setSelectedItem(item);
+  };
 
   return (
     <div className='bg-black overflow-hidden '>

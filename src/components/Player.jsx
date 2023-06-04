@@ -31,6 +31,7 @@ export default function Player() {
   const [showModal, setShowModal] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [playlistCreated, setPlaylistCreated] = useState(false);
+  const [playlistName, setPlaylistName] = useState('');
   const fetchCurrentSong = () => {
     if (!songInfo) {
       spotifyApi.getMyCurrentPlayingTrack().then((data) => {
@@ -94,20 +95,40 @@ export default function Player() {
     setInputValue("");
     setShowModal(false);
     console.log(`Creating playlist with name ${ inputValue}...`);
-    spotifyApi.createPlaylist(userID, {
-      "name": inputValue,
-      "description": "New playlist description",
-      "public": false
-  })
-    .then(data => {
-      const playlistId = data.body.id;
-      console.log(data);
-      console.log(`New playlist ID: ${playlistId}, track URI: ${songInfo.uri}`);
-      setPlaylistCreated(true);
-      addTrackToPlaylist(playlistId, songInfo.uri );
+    setPlaylistName(inputValue);
+    // 检查歌曲是否已存在于歌单中
+    spotifyApi.getUserPlaylists()
+    .then((response) => {
+      const playlists = response.body.items;
+      console.log(playlists);
+      const existingPlaylist = playlists.find((playlist) => playlist.name === playlistName);
+
+      if (existingPlaylist) {
+        // 歌单已存在，添加歌曲到既有歌单
+        console.log(`Playlist ${playlistName} already exists, adding track...`);
+        addTrackToPlaylist(existingPlaylist.id, songInfo.uri);
+      } else {
+        // 歌单不存在，创建新歌单并添加歌曲
+        console.log(`Playlist ${playlistName} does not exist, creating new playlist...`);
+        spotifyApi.createPlaylist(userID, {
+          "name": inputValue,
+          "description": "New playlist description",
+          "public": false
+        })
+        .then(data => {
+          const playlistId = data.body.id;
+          console.log(data);
+          console.log(`New playlist ID: ${playlistId}, track URI: ${songInfo.uri}`);
+          setPlaylistCreated(true);
+          addTrackToPlaylist(playlistId, songInfo.uri );
+        })
+        .catch(error => {
+          console.error('Error creating playlist:', error);
+        });
+      }
     })
-    .catch(error => {
-      console.error('Error creating playlist:', error);
+    .catch((error) => {
+      console.error('Failed to fetch user playlists:', error);
     });
 
     // window.location.reload();
