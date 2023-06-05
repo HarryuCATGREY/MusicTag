@@ -12,7 +12,7 @@ import useSpotify from "../hooks/useSpotify";
 import { useRecoilState } from "recoil";
 import { playlistIdState } from "../atoms/playlistAtom";
 
-function Sidebar() {
+function Sidebar( {onItemClick}) {
   const spotifyApi = useSpotify();
   const { data: session, status } = useSession();
   const [playLists, setPlayLists] = useState([]);
@@ -24,17 +24,22 @@ function Sidebar() {
       });
     }
   }, [session, spotifyApi]);
+
+  const handleItemClick = (item) => {
+    onItemClick(item);
+  };
+
   return (
     <div className="text-gray-500 p-5 text-sm border-r border-gray-900 overflow-y-scroll h-screen">
       <div className="space-y-4">
         <button className="flex items-center sapce-x-2 hover:text-white">
         </button>
-        <button className="flex items-center sapce-x-2 hover:text-white">
-          <HomeIcon className="h-5 w-5" onClick={() => setPlaylistId(playlist.id)}/>
+        <button className="flex items-center sapce-x-2 hover:text-white" onClick={() => handleItemClick('home')}>
+          <HomeIcon className="h-5 w-5" />
           <p>Home</p>
         </button>
-        <button className="flex items-center sapce-x-2 hover:text-white">
-          <SearchIcon className="h-5 w-5"/>
+        <button className="flex items-center sapce-x-2 hover:text-white" onClick={() => handleItemClick('search')}>
+          <SearchIcon className="h-5 w-5" />
           <p>Search</p>
         </button>
         <button className="flex items-center sapce-x-2 hover:text-white">
@@ -58,7 +63,10 @@ function Sidebar() {
         <h2 className="weight">TAGS:</h2>
         {playLists.map((playlist) => (
           <p key={playlist.id} className="cursor-pointer hover:text-white" 
-          onClick={() => setPlaylistId(playlist.id)}>{playlist.name}</p>
+          onClick={() => {
+            setPlaylistId(playlist.id);
+            handleItemClick('playlist');
+          }}>{playlist.name}</p>
         ))}
         <hr className="border-t-[0.1px] border-gray-900"/>
       </div>

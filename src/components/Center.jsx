@@ -7,6 +7,8 @@ import { playlistIdState, playlistState} from '../atoms/playlistAtom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Songs from './Songs';
 import Link from 'next/link';
+import HomeComponent from './HomeComponent';
+import Search from './Search';
 
 
 const colors = [
@@ -21,7 +23,7 @@ const colors = [
 ]
 
 
-function Center() {
+function Center( {selectedItem}) {
   const {data: session} = useSession();
   const spotifyApi = useSpotify();
   const [color, setColor] = React.useState(null);
@@ -52,7 +54,18 @@ function Center() {
           </div>
         </Link>
       </header>
-      <section className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-40 text-white p-8`}>
+
+      {selectedItem === 'home' && 
+      <div>
+        <section className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-40 text-white p-8`}>
+          <div>
+            <h1 className="text-2xl font-bold">Home</h1>
+          </div>
+        </section>
+        <HomeComponent/></div>}
+      {selectedItem === 'playlist' && 
+      <div>
+        <section className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-40 text-white p-8`}>
         <img src={playlist?.images[0].url} alt="playlist" className="h-20 w-20 rounded-md shadow-2xl"/>
         <div>
           <p className='text-sm'>PLAYLIST</p>
@@ -60,6 +73,18 @@ function Center() {
         </div>
       </section>
       <Songs />
+      </div>
+      }
+      {selectedItem === 'search' &&
+        <div>
+              <section className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-40 text-white p-8`}>
+              <div>
+                <h1 className="text-2xl font-bold">Search</h1>
+              </div>
+            </section>
+            <Search/>
+        </div>
+      }
     </div>
   )
 }

@@ -24,8 +24,8 @@ export default function Home() {
         <title>Music-tag</title>
       </Head>
       <main className='flex'>
-        <Sidebar/>
-        <Center/>
+        <Sidebar onItemClick={handleMenuClick}/>
+        <Center selectedItem={selectedItem}/>
       </main>
       <Player/>
       <div className='sticky bottom-0'></div>
