@@ -36,7 +36,7 @@ function Sidebar( {onItemClick}) {
         </button>
         <button className="flex items-center sapce-x-2 hover:text-white" onClick={() => handleItemClick('home')}>
           <HomeIcon className="h-5 w-5" />
-          <p>Home</p>
+          <p>Recommendation</p>
         </button>
         <button className="flex items-center sapce-x-2 hover:text-white" onClick={() => handleItemClick('search')}>
           <SearchIcon className="h-5 w-5" />

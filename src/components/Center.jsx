@@ -60,7 +60,7 @@ function Center( {selectedItem}) {
       <div>
         <section className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-40 text-white p-8`}>
           <div>
-            <h1 className="text-2xl font-bold">Home</h1>
+            <h1 className="text-2xl font-bold">Recommendation</h1>
           </div>
         </section>
         <HomeComponent/></div>}
