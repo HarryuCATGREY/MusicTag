@@ -9,6 +9,7 @@ import Songs from './Songs';
 import Link from 'next/link';
 import HomeComponent from './HomeComponent';
 import Search from './Search';
+import SearchTags from './SearchTags';
 
 
 const colors = [
@@ -79,10 +80,20 @@ function Center( {selectedItem}) {
         <div>
               <section className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-40 text-white p-8`}>
               <div>
-                <h1 className="text-2xl font-bold">Search</h1>
+                <h1 className="text-2xl font-bold">Search New Songs</h1>
               </div>
             </section>
             <Search/>
+        </div>
+      }
+      {selectedItem === 'library' &&
+        <div>
+              <section className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-40 text-white p-8`}>
+              <div>
+                <h1 className="text-2xl font-bold">Search songs from your tags</h1>
+              </div>
+            </section>
+            <SearchTags/>
         </div>
       }
     </div>

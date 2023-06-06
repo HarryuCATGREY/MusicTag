@@ -9,9 +9,10 @@ function Search() {
 
   const handleSearch = async () => {
     try {
-      const response = spotifyApi.search(searchTerm, 'track');
+      const response = await spotifyApi.search(searchTerm, ['track']);
       const tracks = response.body.tracks.items;
       setSearchResults(tracks);
+      
     } catch (error) {
       console.error('Error searching tracks:', error);
     }
@@ -22,11 +23,12 @@ function Search() {
   };
 
   const handleSubmit = (event) => {
+    event.preventDefault();
     handleSearch();
   };
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center">
       <form className='center' onSubmit={handleSubmit}>
         <input
           className='border-2 border-gray-900 rounded-md text-black'

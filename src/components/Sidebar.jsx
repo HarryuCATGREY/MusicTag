@@ -42,9 +42,9 @@ function Sidebar( {onItemClick}) {
           <SearchIcon className="h-5 w-5" />
           <p>Search</p>
         </button>
-        <button className="flex items-center sapce-x-2 hover:text-white">
+        <button className="flex items-center sapce-x-2 hover:text-white" onClick={() => handleItemClick('library')}>
           <LibraryIcon className="h-5 w-5"/>
-          <p>Your Library</p>
+          <p>Search Tags</p>
         </button>
         <hr className="border-t-[0.1px] border-gray-900"/>
         <button className="flex items-center sapce-x-2 hover:text-white">
