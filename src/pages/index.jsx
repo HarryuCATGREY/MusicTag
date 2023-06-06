@@ -12,7 +12,7 @@ import Player from "../components/Player.jsx"
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const [selectedItem, setSelectedItem] = useState('home');
+  const [selectedItem, setSelectedItem] = useState('');
 
   const handleMenuClick = (item) => {
     setSelectedItem(item);
