@@ -14,9 +14,9 @@ function HomeComponent () {
   const getTracks = async () => {
     const response = await spotifyApi.getFeaturedPlaylists({ limit: 10 });
     const featuredPlaylists = response.body.playlists.items;
+    console.log("fea",featuredPlaylists);
+    const tracks = await spotifyApi.getPlaylistTracks(featuredPlaylists[9].id);
     
-    const tracks = await spotifyApi.getPlaylistTracks(featuredPlaylists[1].id);
-    console.log(tracks);
     setPlaylists(tracks);
   }
   
