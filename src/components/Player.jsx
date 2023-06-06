@@ -101,15 +101,16 @@ export default function Player() {
     .then((response) => {
       const playlists = response.body.items;
       console.log(playlists);
-      const existingPlaylist = playlists.find((playlist) => playlist.name === playlistName);
+      console.log("value:", inputValue);
+      const existingPlaylist = playlists.find((playlist) => playlist.name === inputValue);
 
       if (existingPlaylist) {
         // 歌单已存在，添加歌曲到既有歌单
-        console.log(`Playlist ${playlistName} already exists, adding track...`);
+        console.log(`Playlist ${inputValue} already exists, adding track...`);
         addTrackToPlaylist(existingPlaylist.id, songInfo.uri);
       } else {
         // 歌单不存在，创建新歌单并添加歌曲
-        console.log(`Playlist ${playlistName} does not exist, creating new playlist...`);
+        console.log(`Playlist ${inputValue} does not exist, creating new playlist...`);
         spotifyApi.createPlaylist(userID, {
           "name": inputValue,
           "description": "New playlist description",
